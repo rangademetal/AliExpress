@@ -25,7 +25,6 @@ try:
         'ID INTEGER AUTO_INCREMENT PRiMARY KEY,'
         'name_product varchar(30) NOT NULL,'
         'source varchar(100) NOT NULL,'
-        'time FLOAT NOT NULL,'
         'datetime DATE NOT NULL,'
         'id_category INTEGER NOT NULL,'
         'FOREIGN KEY(id_category) REFERENCES category(ID)'     
@@ -33,3 +32,36 @@ try:
     )
 except Error as e:
     print(f'ERROR - {e}')
+
+
+try:
+    cursor.execute(
+        'CREATE TABLE timer'
+        '('
+        'id INTEGER auto_INCREMENT PRIMARY KEY,'
+        'timer FLOAT NOT NULL,'
+        'id_category INTEGER NOT NULL,'
+        ''
+        'FOREIGN KEY(id_category) REFERENCES category(ID)'
+        ')'
+    )
+except Error as e:
+    print(f'ERROR - {e}')
+try:
+    cursor.execute('ALTER TABLE category ADD COLUMN source VARCHAR(200)')
+except Error as e:
+    print(f'ERROR - {e}')
+
+try:
+    cursor.execute('ALTER TABLE category modify column source varchar(200) unique')
+except Error as e:
+    print(f'ERROR - {e}')
+# try:
+#     cursor.execute('DROP TABLE product')
+# except Error as e:
+#     print(f'ERROR - {e}')
+#
+# try:
+#     cursor.execute('DROP TABLE category')
+# except Error as e:
+#     print(f'ERROR - {e}')

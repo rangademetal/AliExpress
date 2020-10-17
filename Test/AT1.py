@@ -11,9 +11,9 @@ class InputTest(unittest.TestCase):
 
     # Check enviroment parameters with database connection
     def test_database(self):
-        self.assertEqual(DB_USERNAME, 'aliexpress')
+        self.assertEqual(DB_USERNAME, 'emag')
         self.assertEqual(DB_HOST, 'localhost')
-        self.assertEqual(DB_PASSWORD, 'aliexpress')
+        self.assertEqual(DB_PASSWORD, 'emag')
         self.assertEqual(DB_DATABASE, 'emag')
 
     # Check webdriver is located in project file
