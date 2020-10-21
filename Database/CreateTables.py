@@ -56,6 +56,8 @@ try:
     cursor.execute('ALTER TABLE category modify column source varchar(200) unique')
 except Error as e:
     print(f'ERROR - {e}')
+
+
 # try:
 #     cursor.execute('DROP TABLE product')
 # except Error as e:
