@@ -5,24 +5,24 @@ from mysql.connector.errors import Error
 
 
 class Category:
-    def __init__(self, source):
-        self.source = source
+    def __init__(self):
+        self.scanner = Initialization()
+        self.database = ConnectionDatabase(DB_DATABASE)
 
-    def get_category(self):
-        database = ConnectionDatabase(DB_DATABASE)
-        db = database.connect_database()
-        scanner = Initialization()
-        scanner.driver.get(self.source)
-
-        category = scanner.driver.find_element_by_xpath(
-            '//*[@id="main-container"]/section[1]/div/div[3]/div[2]/div[2]/div[1]/h1/span/span[1]')
+    def get_category(self, source):
+        db = self.database.connect_database()
+        self.scanner.driver.get(source)
+        category = self.scanner.driver.find_element_by_class_name('title-phrasing-xl')
         print(category.text)
-        self.source = scanner.driver.current_url
+        source = self.scanner.driver.current_url
         try:
             cursor = db.cursor()
             sql = 'INSERT INTO category(name_category, source) values (%s, %s)'
-            val = (category.text, self.source)
+            val = (category.text, source)
             cursor.execute(sql, val)
             db.commit()
         except Error as e:
             print(f'Error - {e}')
+
+    def __del__(self):
+        self.scanner.driver.quit()

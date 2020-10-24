@@ -2,49 +2,47 @@ from Emag.WebDriver import Initialization
 from Database.ConnectionDatabase import ConnectionDatabase
 from Database.Secret import *
 from mysql.connector.errors import Error
+from selenium.common.exceptions import NoSuchElementException
 import time
 
 
 class Timer:
-    def __init__(self, source, pages):
-        self.source = source
-        self.pages = pages
+    def __init__(self, ):
+        self.scanner = Initialization()
+        self.database = ConnectionDatabase(DB_DATABASE)
 
-    def timer(self):
-        database = ConnectionDatabase(DB_DATABASE)
-        scanner = Initialization()
-        db = database.connect_database()
-        scanner.driver.get(self.source)
-        category = scanner.driver.find_element_by_xpath('//*[@id="main-container"]/section[1]/div/div[3]/div[2]/div[2]/div[1]/h1/span/span[1]')
+    def timer_(self, source, pages, url):
+
+        db = self.database.connect_database()
+        self.scanner.driver.get(source)
+        category = self.scanner.driver.find_element_by_class_name('title-phrasing-xl')
         category = category.text
-
-        cursor = db.cursor()
+        print(category)
+        cursor = db.cursor(buffered=True)
         sql = 'SELECT id from category where name_category = %s'
         val = (category, )
         cursor.execute(sql, val)
         res = cursor.fetchone()
         id_cat = res
-        print(id_cat[0])
 
-        total = []
-        for i in range(1, self.pages):
+        for i in range(1, pages):
             start = time.perf_counter()
-            scanner.driver.get(f'https://www.emag.ro/search/laptopuri/laptop/p{i}/c')
+            self.scanner.driver.get(f'{url}/p{i}/c')
             stop = time.perf_counter()
             timer = f'{stop - start:0.4f}'
             timer = float(timer)
-            total.append(timer)
-            print(f'Page {scanner.driver.current_url} have {stop - start:0.4f} seconds')
+            print(f'Page {self.scanner.driver.current_url} have {stop - start:0.4f} seconds')
             try:
                 sql = 'INSERT INTO timer(timer, id_category, source) values(%s, %s, %s)'
-                val = (timer, id_cat[0], scanner.driver.current_url)
+                val = (timer, id_cat[0], self.scanner.driver.current_url)
                 cursor.execute(sql, val)
                 db.commit()
             except Error as e:
                 print('Update in Database')
                 sql = 'UPDATE timer SET timer = %s WHERE source = %s'
-                val = (timer, scanner.driver.current_url)
+                val = (timer, self.scanner.driver.current_url)
                 cursor.execute(sql, val)
                 db.commit()
 
-        print(f'Total loading time is: {sum(map(float, total))}')
+    def __del__(self):
+        self.scanner.driver.quit()
