@@ -26,8 +26,22 @@ class Timer:
         id_cat = res
 
         for i in range(1, pages):
+
             start = time.perf_counter()
             self.scanner.driver.get(f'{url}/p{i}/c')
+            for j in range(1, 62):
+                try:
+                    start = time.perf_counter()
+                    clicker = self.scanner.driver.find_element_by_xpath(f'//*[@id="card_grid"]/div[{i}]/div/div/div[2]/h2/a')
+                    clicker.click()
+                    stop = time.perf_counter()
+                    timer = f'{stop - start:0.4f}'
+                    timer = float(timer)
+                    print(timer)
+                    self.scanner.driver.execute_script("window.history.go(-1)")
+                except Error as e:
+                    print(f'ERROR - {e}')
+
             stop = time.perf_counter()
             timer = f'{stop - start:0.4f}'
             timer = float(timer)
