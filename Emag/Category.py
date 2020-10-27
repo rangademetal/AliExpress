@@ -14,11 +14,10 @@ class Category:
         self.scanner.driver.get(source)
         category = self.scanner.driver.find_element_by_class_name('title-phrasing-xl')
         print(category.text)
-        source = self.scanner.driver.current_url
         try:
             cursor = db.cursor()
-            sql = 'INSERT INTO category(name_category, source) values (%s, %s)'
-            val = (category.text, source)
+            sql = 'INSERT INTO category(name_category) values (%s)'
+            val = (category.text,)
             cursor.execute(sql, val)
             db.commit()
         except Error as e:

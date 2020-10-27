@@ -8,7 +8,7 @@ table = PrettyTable()
 
 try:
     cursor = db.cursor()
-    sql = "SELECT source, timer FROM timer WHERE timer > 1.500"
+    sql = "SELECT id, source, timer FROM timer WHERE timer > 1.500"
     cursor.execute(sql)
     result = cursor.fetchall()
     table.field_names = ['Source', 'Time']

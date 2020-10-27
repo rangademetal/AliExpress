@@ -15,33 +15,8 @@ class Timer:
         id_category = self.database.select_id(category.text)
 
         for i in range(1, pages):
-            count = 1
-            scroll = 0
             start = time.perf_counter()
             self.scanner.driver.get(f'{url}/p{i}/c')
-            while count != 62:
-                self.scanner.driver.execute_script('window.scrollTo(0, ' + str(scroll) + ')')
-                print(count)
-                try:
-                    clickers = self.scanner.driver.find_element_by_xpath(
-                        f'//*[@id="card_grid"]/div[{count}]/div/div/div[2]/h2/a')
-                except NoSuchElementException:
-                    continue
-
-                start = time.perf_counter()
-                clickers.click()
-                stop = time.perf_counter()
-                count += 1
-                if count % 5 == 0:
-                    count += 1
-
-                scroll += 145
-                timer = f'{stop - start:0.4f}'
-                timer = float(timer)
-                print(timer)
-                self.scanner.driver.execute_script("window.history.go(-1)")
-                time.sleep(1)
-
             stop = time.perf_counter()
             timer = f'{stop - start:0.4f}'
             timer = float(timer)
