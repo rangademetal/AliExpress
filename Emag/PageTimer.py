@@ -25,7 +25,7 @@ class Timer:
                 try:
                     clickers = self.scanner.driver.find_element_by_xpath(
                         f'//*[@id="card_grid"]/div[{count}]/div/div/div[2]/h2/a')
-                except NoSuchElementException as e:
+                except NoSuchElementException:
                     continue
 
                 start = time.perf_counter()
