@@ -1,6 +1,7 @@
 import unittest
 from Emag.WebDriver import Initialization
 
+
 class TimeTest(unittest.TestCase):
     def setUp(self):
         self.tester = Initialization()

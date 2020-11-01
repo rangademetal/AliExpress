@@ -40,17 +40,6 @@ class Product:
             print(timer)
             print(self.scanner.driver.current_url)
             self.database.insert_update(timer, id_category, self.scanner.driver.current_url)
-            # try:
-            #     sql = 'INSERT INTO timer(timer, id_category, source) values(%s, %s, %s)'
-            #     val = (timer, id_cat[0], self.scanner.driver.current_url)
-            #     cursor.execute(sql, val)
-            #     db.commit()
-            # except Error as e:
-            #     print('Update in Database')
-            #     sql = 'UPDATE timer SET timer = %s WHERE source = %s'
-            #     val = (timer, self.scanner.driver.current_url)
-            #     cursor.execute(sql, val)
-            #     db.commit()
             self.scanner.driver.execute_script("window.history.go(-1)")
             time.sleep(1)
 
