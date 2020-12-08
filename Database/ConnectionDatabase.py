@@ -17,3 +17,4 @@ class ConnectionDatabase(ConnectionServer):
             database=self.DB_DATABASE
         )
         return database
+
